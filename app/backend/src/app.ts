@@ -6,6 +6,8 @@ class App {
 
   constructor() {
     // ...
+    this.app = express();
+    this.app.use(express.json());
     this.config();
     // ...
   }
@@ -24,7 +26,7 @@ class App {
 
   // ...
   public start(PORT: string | number):void {
-    // ...
+    this.app.listen(PORT, () => console.log('Ouvindo na porta', PORT));
   }
 }
 
