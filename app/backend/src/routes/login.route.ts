@@ -1,6 +1,6 @@
 import * as express from 'express';
+import LoginController from '../controllers/login.controller';
 import LoginMiddleware from '../middlewares/login.middleware';
-import LoginController from 'src/database/controllers/login.controller';
 
 const loginRouter = express.Router();
 
