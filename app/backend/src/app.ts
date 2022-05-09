@@ -1,4 +1,5 @@
 import * as express from 'express';
+import loginRouter from './routes/login.route';
 
 class App {
   public app: express.Express;
@@ -9,10 +10,15 @@ class App {
     this.app = express();
     this.app.use(express.json());
     this.config();
+    this.app.use('/login', loginRouter);
+    /*     this.app.use('/login/validate', loginRouter);
+        this.app.use('/teams', teamsRouter);
+        this.app.use('/teams/:id', teamsRouter);
+        this.app.use('/matches', matchesRouter); */
     // ...
   }
 
-  private config():void {
+  private config(): void {
     const accessControl: express.RequestHandler = (_req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS,PUT,PATCH');
@@ -25,7 +31,7 @@ class App {
   }
 
   // ...
-  public start(PORT: string | number):void {
+  public start(PORT: string | number): void {
     this.app.listen(PORT, () => console.log('Ouvindo na porta', PORT));
   }
 }
