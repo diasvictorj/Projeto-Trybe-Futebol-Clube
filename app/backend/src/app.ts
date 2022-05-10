@@ -11,10 +11,11 @@ class App {
     this.app.use(express.json());
     this.config();
     this.app.use('/login', loginRouter);
-    /*     this.app.use('/login/validate', loginRouter);
-        this.app.use('/teams', teamsRouter);
-        this.app.use('/teams/:id', teamsRouter);
-        this.app.use('/matches', matchesRouter); */
+    this.app.use('/login/validate', loginRouter);
+    /*
+       this.app.use('/teams', teamsRouter);
+       this.app.use('/teams/:id', teamsRouter);
+       this.app.use('/matches', matchesRouter); */
     // ...
   }
 
