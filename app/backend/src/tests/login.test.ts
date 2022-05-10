@@ -12,19 +12,19 @@ const { expect } = chai;
 describe('Testa a rota /login', () => {
   let chaiHttpResponse: Response;
   const requestOk = {
-    email: 'test@test.com',
-    password: 'test123456'
+    email: 'paode@batata.com',
+    password: 'paodebatata'
   }
 
-  const requestFail = {
-    email: 'invalidEmail',
+  const badRequest = {
+    email: 'emailInvalido',
     password: '1234'
   }
-  const requestFail2 = {
+  const badRequest2 = {
     email: '',
     password: 'test123456'
   }
-  const requestFail3 = {
+  const badRequest3 = {
     email: 'test@test.com',
     password: ''
   }
@@ -34,19 +34,39 @@ describe('Testa a rota /login', () => {
     expect(chaiHttpResponse).to.have.status(200);
   });
 
-  it('Os campos email e password devem ser válidos', async () => {
-    chaiHttpResponse = await chai.request(app).post('/login').send(requestFail);
-    expect(chaiHttpResponse.body.error).to.be.equal('Incorrect email or password');
-    expect(chaiHttpResponse).to.have.status(400);
-  });
   it('O campo email deve ser válido', async () => {
-    chaiHttpResponse = await chai.request(app).post('/login').send(requestFail2);
+    chaiHttpResponse = await chai.request(app).post('/login').send(badRequest2);
     expect(chaiHttpResponse.body.error).to.be.equal('All fields must be filled');
     expect(chaiHttpResponse).to.have.status(400);
   });
+  it('Os campos email e password devem ser válidos', async () => {
+    chaiHttpResponse = await chai.request(app).post('/login').send(badRequest);
+    expect(chaiHttpResponse.body.error).to.be.equal('Incorrect email or password');
+    expect(chaiHttpResponse).to.have.status(400);
+  });
+  
   it('O campo password deve ser válido', async () => {
-    chaiHttpResponse = await chai.request(app).post('/login').send(requestFail3);
+    chaiHttpResponse = await chai.request(app).post('/login').send(badRequest3);
     expect(chaiHttpResponse.body.error).to.be.equal('All fields must be filled');
     expect(chaiHttpResponse).to.have.status(400);
   });
 });
+
+describe('Testa a rota /login/validate', () => {
+  const jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJwYXNzd29yZCI6InRlc3QxMjM0NTYiLCJyb2xlIjoiYWRtaW4ifQ.PQ0He6tTTT6vodYLdZyRSVjWweFoiBCVxIHDLrighvs'
+  const invalidToken = 'tokenInvalid';
+  it('A rota /login/validate deve retornar um status 200 ao passar um token válido', async () => {
+    const chaiHttpResponse = await chai.request(app).get('/login/validate').set('Authorization', 'jwtToken');
+    expect(chaiHttpResponse).to.have.status(200);
+  });
+
+  it('A rota /login/validate deve retornar uma role ao passar o token correto', async () => {
+    const chaiHttpResponse = await chai.request(app).get('/login/validate').set('Authorization', jwtToken);
+    expect(chaiHttpResponse.body.role).to.be.equal('admin');
+  });
+
+  it('A rota /login/validate deve retornar um status 400 quando for passado um token inválido', async () => {
+    const chaiHttpResponse = await chai.request(app).get('/login/validate').set('Authorization', 'invalidToken');
+    expect(chaiHttpResponse).to.have.status(400);
+  });
+}); 
