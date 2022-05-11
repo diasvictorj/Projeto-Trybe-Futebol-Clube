@@ -9,7 +9,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Testa a rota /login', () => {
+describe('Testando rota /login', () => {
   let chaiHttpResponse: Response;
   const requestOk = {
     email: 'paode@batata.com',
@@ -29,7 +29,7 @@ describe('Testa a rota /login', () => {
     password: ''
   }
 
-  it('A rota /login deve retornar um status 200', async () => {
+  it('/login retorna um status 200', async () => {
     chaiHttpResponse = await chai.request(app).post('/login').send(requestOk);
     expect(chaiHttpResponse).to.have.status(200);
   });
@@ -52,20 +52,20 @@ describe('Testa a rota /login', () => {
   });
 });
 
-describe('Testa a rota /login/validate', () => {
+describe('Testando rota /login/validate', () => {
   const jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJwYXNzd29yZCI6InRlc3QxMjM0NTYiLCJyb2xlIjoiYWRtaW4ifQ.PQ0He6tTTT6vodYLdZyRSVjWweFoiBCVxIHDLrighvs'
   const invalidToken = 'tokenInvalid';
-  it('A rota /login/validate deve retornar um status 200 ao passar um token válido', async () => {
+  it('/login/validate retorna um status 200 ao passar um token válido', async () => {
     const chaiHttpResponse = await chai.request(app).get('/login/validate').set('Authorization', 'jwtToken');
     expect(chaiHttpResponse).to.have.status(200);
   });
 
-  it('A rota /login/validate deve retornar uma role ao passar o token correto', async () => {
+  it('/login/validate retorna uma role ao passar o token correto', async () => {
     const chaiHttpResponse = await chai.request(app).get('/login/validate').set('Authorization', jwtToken);
     expect(chaiHttpResponse.body.role).to.be.equal('admin');
   });
 
-  it('A rota /login/validate deve retornar um status 400 quando for passado um token inválido', async () => {
+  it('/login/validate retorna um status 400 quando for passado um token inválido', async () => {
     const chaiHttpResponse = await chai.request(app).get('/login/validate').set('Authorization', 'invalidToken');
     expect(chaiHttpResponse).to.have.status(400);
   });
