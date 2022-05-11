@@ -1,5 +1,5 @@
 import * as express from 'express';
-import MatchesController from '../controllers/matches.controller.ts';
+import MatchesController from '../controllers/matches.controller';
 import MatchMiddleware from '../middlewares/match.middleware';
 import TokenMiddleware from '../middlewares/token.middleware';
 
