@@ -1,7 +1,9 @@
 import * as express from 'express';
+import * as cors from 'cors';
 import loginRouter from './routes/login.route';
 import teamsRouter from './routes/teams.route';
 import matchesRouter from './routes/matches.route';
+import leaderboardsRouter from './routes/leaderboard.route';
 import errorMiddle from './middlewares/error.middleware';
 
 class App {
@@ -18,7 +20,7 @@ class App {
     this.app.use('/teams', teamsRouter);
     this.app.use('/teams/:id', teamsRouter);
     this.app.use('/matches', matchesRouter);
-    /* this.app.use('/leaderboard', leaderboardRouter); */
+    this.app.use('/leaderboard', leaderboardsRouter);
     this.app.use(errorMiddle);
     // ...
   }
@@ -32,6 +34,7 @@ class App {
     };
 
     this.app.use(accessControl);
+    this.app.use(cors());
     // ...
   }
 
